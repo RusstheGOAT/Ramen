@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify
 import requests
 import json
 import random
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -58,7 +59,12 @@ def random_ramen():
     if details:
         return jsonify(details)
     else:
-        return jsonify({'error': 'No details found for the selected shop'})
+        return jsonify(shop)  # 直接返回JSON文件中的資料
+
+@app.route('/current_time')
+def current_time():
+    now = datetime.now()
+    return jsonify({'current_time': now.strftime("%Y-%m-%d %H:%M:%S")})
 
 if __name__ == '__main__':
     app.run(debug=True)
