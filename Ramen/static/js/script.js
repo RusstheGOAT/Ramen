@@ -18,3 +18,8 @@ function getCurrentTime() {
             document.getElementById('current-time-result').innerText = data.current_time;
         });
 }
+
+function startRamenGame(){
+    window.location.href = "/ramen_game";
+}
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>拉麵小遊戲</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        #main {
+            display: flexbox;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div id="main">
+        <div>
+            <h1 style="text-align: center;">拉麵小遊戲</h1>
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+        </div>
+        <div id="ramen-game">
+            <button onclick="returnToHomepage()">返回主頁</button>
+            <p id="ramen-game-result"></p>
+        </div>
+    </div>
+    <script src="../static/js/game.js"></script>
+</body>
+</html>

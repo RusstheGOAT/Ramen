@@ -66,5 +66,9 @@ def current_time():
     now = datetime.now()
     return jsonify({'current_time': now.strftime("%Y-%m-%d %H:%M:%S")})
 
+@app.route('/ramen_game')
+def ramen_game():
+    return render_template('game.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

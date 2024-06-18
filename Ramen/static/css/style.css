@@ -11,7 +11,7 @@ button {
     cursor: pointer;
 }
 
-#random-ramen, #current-time {
+#random-ramen, #current-time, #ramen-game {
     margin-bottom: 20px;
 }
 
