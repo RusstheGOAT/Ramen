@@ -1,14 +1,9 @@
-from flask import Flask, render_template, jsonify
-import requests
+from flask import Flask, render_template, jsonify, request
 import json
 import random
 from datetime import datetime
 
 app = Flask(__name__)
-
-API_KEY = 'YOUR_GOOGLE_API_KEY'  # 替換為您的Google API金鑰
-PLACE_DETAILS_URL = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
-PLACE_INFO_URL = 'https://maps.googleapis.com/maps/api/place/details/json'
 
 def load_ramen_shops():
     with open('ramen_shops.json', 'r', encoding='utf-8') as file:
@@ -16,50 +11,25 @@ def load_ramen_shops():
 
 ramen_shops = load_ramen_shops()
 
-def get_place_details(name, city):
-    params = {
-        'input': f'{name}, {city}',
-        'inputtype': 'textquery',
-        'fields': 'place_id',
-        'key': API_KEY
-    }
-    response = requests.get(PLACE_DETAILS_URL, params=params)
-    if response.status_code == 200:
-        results = response.json().get('candidates', [])
-        if results:
-            place_id = results[0]['place_id']
-            return get_place_info(place_id)
-    return None
-
-def get_place_info(place_id):
-    params = {
-        'place_id': place_id,
-        'fields': 'name,formatted_address,opening_hours,price_level',
-        'key': API_KEY
-    }
-    response = requests.get(PLACE_INFO_URL, params=params)
-    if response.status_code == 200:
-        result = response.json().get('result', {})
-        return {
-            'name': result.get('name'),
-            'address': result.get('formatted_address'),
-            'hours': result.get('opening_hours', {}).get('weekday_text', 'N/A'),
-            'price_range': result.get('price_level', 'N/A')
-        }
-    return None
-
 @app.route('/')
 def index():
-    return render_template('index.html')
+    cities = list(set(shop['city'] for shop in ramen_shops))
+    return render_template('index.html', cities=cities)
 
-@app.route('/random_ramen')
+@app.route('/random_ramen', methods=['POST'])
 def random_ramen():
-    shop = random.choice(ramen_shops)
-    details = get_place_details(shop['name'], shop['city'])
-    if details:
-        return jsonify(details)
+    data = request.get_json()
+    city = data.get('city')
+    if city == '都可以':
+        filtered_shops = ramen_shops
     else:
-        return jsonify(shop)  # 直接返回JSON文件中的資料
+        filtered_shops = [shop for shop in ramen_shops if shop['city'] == city]
+    
+    if filtered_shops:
+        selected_shop = random.choice(filtered_shops)
+        return jsonify(selected_shop)
+    else:
+        return jsonify({'error': 'No ramen shops found in the selected city'})
 
 @app.route('/current_time')
 def current_time():
