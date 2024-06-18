@@ -9,6 +9,12 @@
 <body>
     <h1>歡迎來到拉麵專題</h1>
     <div id="random-ramen">
+        <select id="city-select">
+            <option value="都可以">都可以</option>
+            {% for city in cities %}
+            <option value="{{ city }}">{{ city }}</option>
+            {% endfor %}
+        </select>
         <button onclick="getRandomRamen()">隨機推薦拉麵店</button>
         <p id="random-ramen-result"></p>
     </div>
