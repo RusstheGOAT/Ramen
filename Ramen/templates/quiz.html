@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天吃什麼拉麵</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>今天吃什麼拉麵</h1>
+    <form action="/submit" method="post">
+        {% if question %}
+            <p>{{ question }}</p>
+            <div>
+                {{ options | safe }}
+            </div>
+        {% endif %}
+        <button type="submit">{{ buttonText }}</button>
+    </form>
+    {% if show_home_button %}
+        <a href="/"><button>回首頁</button></a>
+    {% endif %}
+</body>
+</html>
